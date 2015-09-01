@@ -10,16 +10,9 @@
             function onLoad() {
               // Let's construct simple graph:
               // 0 -> 1 -> 2 -> 3 -> 4 -> 5
-             var graph = Viva.Graph.graph();
-var layout = Viva.Graph.Layout.forceDirected(graph, {
-    springLength : 100,
-    springCoeff : 0.0005,
-    dragCoeff : 0.02,
-    gravity : -1.2
-});
-
-// Construct the graph
-graph.addNode('iphone 5s', {url : 'http://ecx.images-amazon.com/images/I/5126u6Mwp6L._SY300_.jpg'});
+              var graph = Viva.Graph.graph();
+             
+              graph.addNode('iphone 5s', {url : 'http://ecx.images-amazon.com/images/I/5126u6Mwp6L._SY300_.jpg'});
 graph.addNode('iPhone 5, Black 16GB', {url : 'http://ecx.images-amazon.com/images/I/41NLfJyDcrL._SY300_.jpg'});
 graph.addNode('iPhone 5S Case', {url : 'http://ecx.images-amazon.com/images/I/510CqswiUmL._SY300_.jpg'});
 graph.addNode('iPhone 5 Screen Protector', {url : 'http://ecx.images-amazon.com/images/I/41Eniql9%2BBL._SX300_.jpg'});
@@ -52,13 +45,21 @@ graphics.node(function(node) {
         nodeUI.attr('x', pos.x - 12).attr('y', pos.y - 12);
     });
 
-var renderer = Viva.Graph.View.renderer(graph,
-    {
-        layout : layout,
-        graphics : graphics
-        	
-    });	
-renderer	.run();
+              var idealLength = 90;
+              var layout = Viva.Graph.Layout.forceDirected(graph, {
+                  springLength: idealLength,
+                  springCoeff : 0.0008,
+                  gravity : -10,
+                  // This is the main part of this example. We are telling force directed
+                  // layout, that we want to change length of each physical spring
+                  // by overriding `springTransform` method:
+              });
+              // let's pin middle node:
+              var renderer = Viva.Graph.View.renderer(graph, {
+                  layout : layout,
+                   graphics: graphics
+              });
+              renderer.run();
             }
         </script>
         <style type='text/css'>
